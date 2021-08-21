@@ -1,0 +1,317 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "app/business/api/v1/purchase_order/read.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "Read"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/business/purchase_order": {
+      "get": {
+        "summary": "采购列表.",
+        "description": "产品采购",
+        "operationId": "GetPurchaseOrderList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1purchase_orderListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "分页",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "limit",
+            "description": "@inject_tag:validate:\"number\" attribute:\"分页大小\". 分页大小",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "product_name",
+            "description": "产品名称",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "采购模块"
+        ],
+        "produces": [
+          "application/json"
+        ]
+      }
+    },
+    "/business/purchase_order/{id}": {
+      "get": {
+        "summary": "采购详情.",
+        "description": "产品采购",
+        "operationId": "GetPurchaseOrderDetail",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/purchase_orderDetailReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "订单ID",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "product_id",
+            "description": "产品ID数组. 产品ID数组",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "contract.id",
+            "description": "合同ID",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "contract.sn",
+            "description": "合同编号",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "contract.status",
+            "description": "审核状态",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "contract.created_at",
+            "description": "创建时间",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "contract.updated_at",
+            "description": "更新时间",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "采购模块"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "purchase_orderContract": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "合同ID"
+        },
+        "sn": {
+          "type": "string",
+          "description": "合同编号"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": "审核状态"
+        },
+        "created_at": {
+          "type": "string",
+          "description": "创建时间"
+        },
+        "updated_at": {
+          "type": "string",
+          "description": "更新时间"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/purchase_orderContractDetail"
+          },
+          "description": "详情列表"
+        }
+      }
+    },
+    "purchase_orderContractDetail": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "合同详情ID"
+        },
+        "num": {
+          "type": "number",
+          "format": "double",
+          "description": "产品数量"
+        },
+        "price": {
+          "type": "number",
+          "format": "double",
+          "description": "产品价格"
+        },
+        "product_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "产品ID"
+        }
+      }
+    },
+    "purchase_orderDetailReply": {
+      "type": "object",
+      "properties": {
+        "purchase_order": {
+          "$ref": "#/definitions/purchase_orderOrder",
+          "description": "订单信息"
+        },
+        "product_id": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "description": "产品ID数组",
+          "title": "产品ID数组"
+        }
+      }
+    },
+    "purchase_orderOrder": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "采购单ID"
+        },
+        "sn": {
+          "type": "string",
+          "description": "采购单号"
+        },
+        "account_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "提交人ID"
+        },
+        "audit_account_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "审核人ID"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": "审核状态"
+        },
+        "created_at": {
+          "type": "string",
+          "description": "创建时间"
+        },
+        "updated_at": {
+          "type": "string",
+          "description": "更新时间"
+        },
+        "contract": {
+          "$ref": "#/definitions/purchase_orderContract",
+          "description": "采购合同"
+        }
+      }
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1purchase_orderListReply": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/purchase_orderOrder"
+          },
+          "description": "订单列表"
+        }
+      }
+    }
+  }
+}
