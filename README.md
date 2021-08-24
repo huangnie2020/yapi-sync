@@ -1,6 +1,9 @@
 1. 安装 
 ```
-go get -u github.com/huangnie2020/yapi-sync
+git clone https://github.com/huangnie2020/yapi-sync
+cd yaoi-sync
+go build
+./yapi-sync -path .
 
 ```
 2. 配置
